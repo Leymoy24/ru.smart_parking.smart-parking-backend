@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.smart_parking.database.tokens.Tokens
 
 object Users : Table("users") {
-    private val login = Users.varchar("login", 30)
+    internal val login = Users.varchar("login", 30)
     private val password = Users.varchar("password", 30)
     private val username = Users.varchar("username", 60)
     private val email = Users.varchar("email", 60)

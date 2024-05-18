@@ -5,16 +5,16 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object Parking : Table("parking") {
-    private val id = Parking.varchar("id", 50)
-    private val name = Parking.varchar("name", 100)
-    private val image = Parking.varchar("image", 250)
-    private val address = Parking.varchar("address", 100)
-    private val location = Parking.varchar("location", 40)
-    private val description = Parking.varchar("description", 200)
-    private val totalPlaces = Parking.integer("total_places")
-    private val availablePlaces = Parking.integer("available_places")
-    private val costPerHour = Parking.integer("cost_per_hour")
-    private val chargingStation = Parking.bool("charging_station")
+    internal val id = Parking.varchar("id", 50)
+    internal val name = Parking.varchar("name", 100)
+    internal val image = Parking.varchar("image", 250)
+    internal val address = Parking.varchar("address", 100)
+    internal val location = Parking.varchar("location", 40)
+    internal val description = Parking.varchar("description", 200)
+    internal val totalPlaces = Parking.integer("total_places")
+    internal val availablePlaces = Parking.integer("available_places")
+    internal val costPerHour = Parking.integer("cost_per_hour")
+    internal val chargingStation = Parking.bool("charging_station")
 
     fun insert(parkingDTO: ParkingDTO) {
         transaction {
@@ -75,6 +75,12 @@ object Parking : Table("parking") {
             }
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+
+    fun parkingExists(parkingId: String): Boolean {
+        return transaction {
+            Parking.select { Parking.id.eq(parkingId) }.count() > 0
         }
     }
 

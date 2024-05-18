@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 
 fun Application.configureCarRouting() {
     routing {
-        get("/cars") {
+        get("/cars{login}") {
             val login = call.request.queryParameters["login"]
             if (login != null) {
                 val carController = CarController(call)
