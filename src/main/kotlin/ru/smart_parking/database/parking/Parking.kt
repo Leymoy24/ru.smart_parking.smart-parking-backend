@@ -61,14 +61,14 @@ object Parking : Table("parking") {
                 Parking.selectAll().map { parkingRow ->
                     ParkingDTO(
                         id = parkingRow[Parking.id],
-                        name = parkingRow[Parking.name],
-                        image = parkingRow[Parking.image],
-                        address = parkingRow[Parking.address],
-                        location = parkingRow[Parking.location],
-                        description = parkingRow[Parking.description],
-                        totalPlaces = parkingRow[Parking.totalPlaces],
-                        availablePlaces = parkingRow[Parking.availablePlaces],
-                        costPerHour = parkingRow[Parking.costPerHour],
+                        name = parkingRow[name],
+                        image = parkingRow[image],
+                        address = parkingRow[address],
+                        location = parkingRow[location],
+                        description = parkingRow[description],
+                        totalPlaces = parkingRow[totalPlaces],
+                        availablePlaces = parkingRow[availablePlaces],
+                        costPerHour = parkingRow[costPerHour],
                         chargingStation = parkingRow[chargingStation]
                     )
                 }

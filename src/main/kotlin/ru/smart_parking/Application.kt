@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.Database
 import ru.smart_parking.features.login.configureLoginRouting
 import ru.smart_parking.features.parking.configureParkingRouting
 import ru.smart_parking.features.register.configureRegisterRouting
+import ru.smart_parking.features.user.configureUserRouting
 import ru.smart_parking.plugins.*
 
 fun main() {
@@ -31,4 +32,5 @@ fun Application.module() {
     configureLoginRouting()
     configureRegisterRouting()
     configureParkingRouting()
+    configureUserRouting()
 }

@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import ru.smart_parking.database.tokens.Tokens
 
 object Users : Table("users") {
     private val login = Users.varchar("login", 30)
