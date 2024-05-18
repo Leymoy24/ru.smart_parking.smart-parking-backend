@@ -1,6 +1,5 @@
 package ru.smart_parking.features.login
 
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -17,7 +16,6 @@ class LoginController(private val call: ApplicationCall) {
 
         if (userDTO == null) {
             call.respond(LoginResponseRemote(token = "User not found"))
-//            call.respond(HttpStatusCode.BadRequest, "User not found")
         } else {
             if (userDTO.password == receive.password) {
                 val token = generateUUID()
@@ -25,7 +23,6 @@ class LoginController(private val call: ApplicationCall) {
                 call.respond(LoginResponseRemote(token = token))
             } else {
                 call.respond(LoginResponseRemote(token = "Invalid password"))
-//                call.respond(HttpStatusCode.BadRequest, "Invalid password")
             }
         }
     }

@@ -1,6 +1,5 @@
 package ru.smart_parking.features.register
 
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -17,14 +16,12 @@ class RegisterController(private val call: ApplicationCall) {
     suspend fun registerNewUser() {
         val registerReceiveRemote = call.receive<RegisterReceiveRemote>()
         if (!registerReceiveRemote.email.isValidEmail()) {
-//            call.respond(HttpStatusCode.BadRequest, "Email is not valid")
             call.respond(RegisterResponseRemote(token = "Email is not valid"))
         }
 
         val userDTO = Users.fetchUser(registerReceiveRemote.login)
 
         if (userDTO != null) {
-//            call.respond(HttpStatusCode.Conflict, "User already exists")
             call.respond(RegisterResponseRemote(token = "User already exists"))
         } else {
             val token = generateUUID()
@@ -38,7 +35,6 @@ class RegisterController(private val call: ApplicationCall) {
                     )
                 )
             } catch (e: ExposedSQLException) {
-//                call.respond(HttpStatusCode.Conflict, "User already exists")
                 call.respond(RegisterResponseRemote(token = "User already exists"))
             }
 

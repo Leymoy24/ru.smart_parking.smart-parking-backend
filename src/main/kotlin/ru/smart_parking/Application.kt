@@ -5,6 +5,7 @@ import io.ktor.server.cio.*
 import io.ktor.server.engine.*
 import org.jetbrains.exposed.sql.Database
 import ru.smart_parking.features.login.configureLoginRouting
+import ru.smart_parking.features.parking.configureParkingRouting
 import ru.smart_parking.features.register.configureRegisterRouting
 import ru.smart_parking.plugins.*
 
@@ -29,4 +30,5 @@ fun Application.module() {
     configureSerialization()
     configureLoginRouting()
     configureRegisterRouting()
+    configureParkingRouting()
 }

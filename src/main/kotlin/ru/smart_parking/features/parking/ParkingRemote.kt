@@ -1,6 +1,9 @@
-package ru.smart_parking.database.parking
+package ru.smart_parking.features.parking
 
-class ParkingDTO(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ParkingReceiveRemote(
     val id: String,
     val name: String,
     val image: String,

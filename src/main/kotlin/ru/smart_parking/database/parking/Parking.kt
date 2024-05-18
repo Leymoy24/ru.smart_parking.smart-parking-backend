@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object Parking : Table("parking") {
-    private val id = Parking.varchar("id", 30)
+    private val id = Parking.varchar("id", 50)
     private val name = Parking.varchar("name", 100)
     private val image = Parking.varchar("image", 250)
     private val address = Parking.varchar("address", 100)
@@ -14,6 +14,7 @@ object Parking : Table("parking") {
     private val totalPlaces = Parking.integer("total_places")
     private val availablePlaces = Parking.integer("available_places")
     private val costPerHour = Parking.integer("cost_per_hour")
+    private val chargingStation = Parking.bool("charging_station")
 
     fun insert(parkingDTO: ParkingDTO) {
         transaction {
@@ -27,6 +28,7 @@ object Parking : Table("parking") {
                 it[totalPlaces] = parkingDTO.totalPlaces
                 it[availablePlaces] = parkingDTO.availablePlaces
                 it[costPerHour] = parkingDTO.costPerHour
+                it[chargingStation] = parkingDTO.chargingStation
             }
         }
     }
@@ -44,7 +46,8 @@ object Parking : Table("parking") {
                     description = parkingModel[description],
                     totalPlaces = parkingModel[totalPlaces],
                     availablePlaces = parkingModel[availablePlaces],
-                    costPerHour = parkingModel[costPerHour]
+                    costPerHour = parkingModel[costPerHour],
+                    chargingStation = parkingModel[chargingStation]
                 )
             }
         } catch (e: Exception) {
@@ -65,7 +68,8 @@ object Parking : Table("parking") {
                         description = parkingRow[Parking.description],
                         totalPlaces = parkingRow[Parking.totalPlaces],
                         availablePlaces = parkingRow[Parking.availablePlaces],
-                        costPerHour = parkingRow[Parking.costPerHour]
+                        costPerHour = parkingRow[Parking.costPerHour],
+                        chargingStation = parkingRow[chargingStation]
                     )
                 }
             }
