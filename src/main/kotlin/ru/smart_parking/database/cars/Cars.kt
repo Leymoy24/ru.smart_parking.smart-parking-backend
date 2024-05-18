@@ -4,10 +4,10 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object Cars: Table("cars") {
-    private val id = Cars.varchar("id", 30)
+    private val id = Cars.varchar("id", 50)
     private val userLogin = Cars.varchar("user_login", 30)
-    private val number = Cars.varchar("number", 30)
-    private val model = Cars.varchar("model", 50)
+    private val number = Cars.varchar("number", 20)
+    private val model = Cars.varchar("model", 30)
 
     fun insert(carDTO: CarDTO) {
         transaction {
@@ -17,6 +17,29 @@ object Cars: Table("cars") {
                 it[number] = carDTO.number
                 it[model] = carDTO.model
             }
+        }
+    }
+
+    fun carExists(number: String): Boolean {
+        return transaction {
+            Cars.select { Cars.number.eq(number) }.count() > 0
+        }
+    }
+
+    fun fetchAllCarsByUserLogin(userLogin: String): List<CarDTO> {
+        return try {
+            transaction {
+                Cars.selectAll().where { Cars.userLogin.eq(userLogin) }.map { carsRow ->
+                    CarDTO(
+                        id = carsRow[Cars.id],
+                        userLogin = carsRow[Cars.userLogin],
+                        number = carsRow[number],
+                        model = carsRow[model]
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 
@@ -43,23 +66,6 @@ object Cars: Table("cars") {
                     CarDTO(
                         id = carsRow[Cars.id],
                         userLogin = carsRow[userLogin],
-                        number = carsRow[number],
-                        model = carsRow[model]
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    fun fetchAllCarsByUserLogin(userLogin: String): List<CarDTO> {
-        return try {
-            transaction {
-                Cars.selectAll().where { Cars.userLogin.eq(userLogin) }.map { carsRow ->
-                    CarDTO(
-                        id = carsRow[Cars.id],
-                        userLogin = carsRow[Cars.userLogin],
                         number = carsRow[number],
                         model = carsRow[model]
                     )
