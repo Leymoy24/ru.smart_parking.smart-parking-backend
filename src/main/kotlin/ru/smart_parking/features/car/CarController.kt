@@ -36,4 +36,13 @@ class CarController(private val call: ApplicationCall) {
             }
         )
     }
+
+    suspend fun deleteCar(login: String, number: String) {
+        if (Cars.carExists(number)) {
+            Cars.deleteCar(login, number)
+            call.respond(HttpStatusCode.OK)
+        } else {
+            call.respond(HttpStatusCode.NotFound, "Car with the given number not found")
+        }
+    }
 }

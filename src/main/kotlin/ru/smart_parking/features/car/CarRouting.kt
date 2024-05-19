@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 
 fun Application.configureCarRouting() {
     routing {
-        get("/cars{login}") {
+        get("/cars") {
             val login = call.request.queryParameters["login"]
             if (login != null) {
                 val carController = CarController(call)
@@ -20,6 +20,18 @@ fun Application.configureCarRouting() {
         post("/add-car") {
             val carController = CarController(call)
             carController.addNewCar()
+        }
+
+        delete("/delete-car") {
+            val login = call.request.queryParameters["login"]
+            val number = call.request.queryParameters["number"]
+
+            if (login != null && number != null) {
+                val carController = CarController(call)
+                carController.deleteCar(login, number)
+            } else {
+                call.respond(HttpStatusCode.BadRequest, "Login or number parameter is missing")
+            }
         }
     }
 }

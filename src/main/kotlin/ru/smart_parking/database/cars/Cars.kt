@@ -1,6 +1,7 @@
 package ru.smart_parking.database.cars
 
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object Cars: Table("cars") {
@@ -73,6 +74,12 @@ object Cars: Table("cars") {
             }
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+
+    fun deleteCar(userLogin: String, number: String) {
+        transaction {
+            Cars.deleteWhere { (Cars.userLogin eq userLogin) and (Cars.number eq number) }
         }
     }
 }
