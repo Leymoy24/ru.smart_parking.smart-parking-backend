@@ -4,6 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
 import org.jetbrains.exposed.sql.Database
+import ru.smart_parking.features.booking.configureBookingRoutes
 import ru.smart_parking.features.car.configureCarRouting
 import ru.smart_parking.features.favourite.configureFavouriteRouting
 import ru.smart_parking.features.login.configureLoginRouting
@@ -37,4 +38,5 @@ fun Application.module() {
     configureUserRouting()
     configureCarRouting()
     configureFavouriteRouting()
+    configureBookingRoutes()
 }

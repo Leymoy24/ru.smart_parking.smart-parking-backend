@@ -4,7 +4,7 @@ class BookingDTO(
     val id: String,
     val userLogin: String,
     val parkingId: String,
-    val carId: String,
+    val carNumber: String,
     val checkIn: String,
     val exit: String,
     val amount: Int,
