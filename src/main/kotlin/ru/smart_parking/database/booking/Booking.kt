@@ -2,6 +2,7 @@ package ru.smart_parking.database.booking
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import ru.smart_parking.database.parking.Parking
 import ru.smart_parking.features.booking.BookingReceiveRemote
 
 object Booking : Table("booking") {
@@ -33,11 +34,17 @@ object Booking : Table("booking") {
 
     fun existingOverlappingBooking(booking: BookingReceiveRemote): Boolean {
         return transaction {
-            val existingOverlap = Booking.select {
+            val parkingAvailablePlaces = Parking.slice(Parking.availablePlaces)
+                .select { Parking.id eq booking.parkingId }
+                .singleOrNull()?.get(Parking.availablePlaces) ?: 0
+
+            val overlappingBookingsCount = Booking.select {
                 (checkIn.lessEq(booking.checkIn) and exit.greater(booking.checkIn)) or
                         (checkIn.less(booking.exit) and exit.greaterEq(booking.exit)) or
                         (checkIn.greaterEq(booking.checkIn) and exit.lessEq(booking.exit))
-            }.count() > 0
+            }.count()
+
+            val existingOverlap = overlappingBookingsCount >= parkingAvailablePlaces
 
             existingOverlap
         }
