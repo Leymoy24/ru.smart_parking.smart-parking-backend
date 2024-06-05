@@ -50,7 +50,22 @@ object Booking : Table("booking") {
         }
     }
 
-    fun fetchBooking(userId: String) {
-
+    fun fetchBooking(userId: String): List<BookingDTO> {
+        return transaction {
+            Booking.selectAll().where { userLogin eq userLogin }
+                .map { bookingRow ->
+                    BookingDTO(
+                        id = bookingRow[Booking.id],
+                        userLogin = bookingRow[userLogin],
+                        parkingId = bookingRow[parkingId],
+                        carNumber = bookingRow[carNumber],
+                        checkIn = bookingRow[checkIn],
+                        exit = bookingRow[exit],
+                        amount = bookingRow[amount],
+                        paymentStatus = bookingRow[paymentStatus],
+                        numberOfPlace = bookingRow[numberOfPlace]
+                    )
+                }
+        }
     }
 }

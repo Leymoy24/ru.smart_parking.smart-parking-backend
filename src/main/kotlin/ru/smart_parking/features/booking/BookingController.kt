@@ -31,4 +31,21 @@ class BookingController(private val call: ApplicationCall) {
             call.respond(HttpStatusCode.OK)
         }
     }
+
+    suspend fun getAllBooking(login: String) {
+        val booking = Booking.fetchBooking(login)
+        call.respond(booking.map { booking ->
+            BookingResponseRemote(
+                id = booking.id,
+                userLogin = booking.userLogin,
+                parkingId = booking.parkingId,
+                carNumber = booking.carNumber,
+                checkIn = booking.checkIn,
+                exit = booking.exit,
+                amount = booking.amount,
+                paymentStatus = booking.paymentStatus,
+                numberOfPlace = booking.numberOfPlace
+            )
+        })
+    }
 }
