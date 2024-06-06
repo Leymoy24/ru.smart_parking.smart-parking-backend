@@ -2,7 +2,13 @@ package ru.smart_parking.database.booking
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greater
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.less
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
 import org.jetbrains.exposed.sql.transactions.transaction
+import ru.smart_parking.database.booking.Booking.checkIn
+import ru.smart_parking.database.booking.Booking.exit
 import ru.smart_parking.database.parking.Parking
 import ru.smart_parking.features.booking.BookingReceiveRemote
 import java.time.LocalDateTime
@@ -38,10 +44,10 @@ object Booking : Table("booking") {
     fun existingOverlappingBooking(booking: BookingReceiveRemote): Boolean {
         return transaction {
             val parkingAvailablePlaces = Parking.slice(Parking.availablePlaces)
-                .select { Parking.id eq booking.parkingId }
+                .selectAll().where { Parking.id eq booking.parkingId }
                 .singleOrNull()?.get(Parking.availablePlaces) ?: 0
 
-            val overlappingBookingsCount = Booking.select {
+            val overlappingBookingsCount = Booking.selectAll().where {
                 (checkIn.lessEq(booking.checkIn) and exit.greater(booking.checkIn)) or
                         (checkIn.less(booking.exit) and exit.greaterEq(booking.exit)) or
                         (checkIn.greaterEq(booking.checkIn) and exit.lessEq(booking.exit))
@@ -75,26 +81,24 @@ object Booking : Table("booking") {
     fun getAvailableTimeSlots(parkingId: String, date: String): List<Pair<String, String>> {
         return transaction {
             val parkingCapacity = Parking.slice(Parking.availablePlaces)
-                .select { Parking.id eq parkingId }
+                .selectAll().where { Parking.id eq parkingId }
                 .singleOrNull()?.get(Parking.availablePlaces) ?: 0
 
-            val bookedSlots = Booking.select { Booking.parkingId eq parkingId }
-                .map { bookingRow ->
-                    val checkIn = bookingRow[Booking.checkIn]
-                    val exit = bookingRow[Booking.exit]
-                    if (checkIn.startsWith(date) || exit.startsWith(date)) {
-                        checkIn to exit
-                    } else {
-                        null
-                    }
+            val bookedSlots = Booking.selectAll().where { Booking.parkingId eq parkingId }.mapNotNull { bookingRow ->
+                val checkIn = bookingRow[checkIn]
+                val exit = bookingRow[exit]
+                if (checkIn.startsWith(date) || exit.startsWith(date)) {
+                    checkIn to exit
+                } else {
+                    null
                 }
-                .filterNotNull()
+            }
 
             val opened = Parking.slice(Parking.opened)
-                .select { Parking.id eq parkingId }
+                .selectAll().where { Parking.id eq parkingId }
                 .singleOrNull()?.get(Parking.opened) ?: "00:00"
             val closed = Parking.slice(Parking.closed)
-                .select { Parking.id eq parkingId }
+                .selectAll().where { Parking.id eq parkingId }
                 .singleOrNull()?.get(Parking.closed) ?: "23:59"
 
             val startTime = LocalDateTime.parse("$date $opened", DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
