@@ -15,6 +15,8 @@ object Parking : Table("parking") {
     internal val availablePlaces = Parking.integer("available_places")
     internal val costPerHour = Parking.integer("cost_per_hour")
     internal val chargingStation = Parking.bool("charging_station")
+    internal val opened = Parking.varchar("opened", 5)
+    internal val closed = Parking.varchar("closed", 5)
 
     fun insert(parkingDTO: ParkingDTO) {
         transaction {
@@ -47,7 +49,9 @@ object Parking : Table("parking") {
                     totalPlaces = parkingModel[totalPlaces],
                     availablePlaces = parkingModel[availablePlaces],
                     costPerHour = parkingModel[costPerHour],
-                    chargingStation = parkingModel[chargingStation]
+                    chargingStation = parkingModel[chargingStation],
+                    opened = parkingModel[opened],
+                    closed = parkingModel[closed]
                 )
             }
         } catch (e: Exception) {
@@ -69,7 +73,9 @@ object Parking : Table("parking") {
                         totalPlaces = parkingRow[totalPlaces],
                         availablePlaces = parkingRow[availablePlaces],
                         costPerHour = parkingRow[costPerHour],
-                        chargingStation = parkingRow[chargingStation]
+                        chargingStation = parkingRow[chargingStation],
+                        opened = parkingRow[opened],
+                        closed = parkingRow[closed]
                     )
                 }
             }

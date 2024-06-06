@@ -48,4 +48,9 @@ class BookingController(private val call: ApplicationCall) {
             )
         })
     }
+
+    suspend fun getAvailableTimeSlots(parkingId: String, date: String) {
+        val availableTimeSlots = Booking.getAvailableTimeSlots(parkingId, date)
+        call.respond(availableTimeSlots)
+    }
 }

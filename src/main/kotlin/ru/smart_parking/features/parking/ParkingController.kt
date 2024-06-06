@@ -18,7 +18,9 @@ class ParkingController(private val call: ApplicationCall) {
                 totalPlaces = parking.totalPlaces,
                 availablePlaces = parking.availablePlaces,
                 costPerHour = parking.costPerHour,
-                chargingStation = parking.chargingStation
+                chargingStation = parking.chargingStation,
+                opened = parking.opened,
+                closed = parking.closed,
             )
         })
     }

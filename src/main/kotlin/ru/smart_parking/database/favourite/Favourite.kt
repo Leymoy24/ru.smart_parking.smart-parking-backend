@@ -44,7 +44,9 @@ object Favourite : Table("favourite_parking") {
                         totalPlaces = rowData[Parking.totalPlaces],
                         availablePlaces = rowData[Parking.availablePlaces],
                         costPerHour = rowData[Parking.costPerHour],
-                        chargingStation = rowData[Parking.chargingStation]
+                        chargingStation = rowData[Parking.chargingStation],
+                        opened = rowData[Parking.opened],
+                        closed = rowData[Parking.closed],
                     )
                 }
         }

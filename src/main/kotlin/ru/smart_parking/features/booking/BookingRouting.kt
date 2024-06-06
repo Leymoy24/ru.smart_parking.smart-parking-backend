@@ -21,5 +21,16 @@ fun Application.configureBookingRoutes() {
                 call.respond(HttpStatusCode.BadRequest, "Login parameter is missing")
             }
         }
+
+        get("/available-slots") {
+            val parkingId = call.request.queryParameters["parkingId"]
+            val date = call.request.queryParameters["date"]
+            if (parkingId != null && date != null) {
+                val bookingController = BookingController(call)
+                bookingController.getAvailableTimeSlots(parkingId, date)
+            } else {
+                call.respond(HttpStatusCode.BadRequest, "ParkingId or date parameter is missing")
+            }
+        }
     }
 }

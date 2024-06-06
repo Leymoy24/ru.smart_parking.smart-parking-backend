@@ -13,5 +13,7 @@ data class ParkingReceiveRemote(
     val totalPlaces: Int,
     val availablePlaces: Int,
     val costPerHour: Int,
-    val chargingStation: Boolean
+    val chargingStation: Boolean,
+    val opened: String,
+    val closed: String,
 )
