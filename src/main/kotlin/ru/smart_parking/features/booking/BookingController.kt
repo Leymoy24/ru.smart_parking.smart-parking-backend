@@ -32,6 +32,15 @@ class BookingController(private val call: ApplicationCall) {
         }
     }
 
+    suspend fun deleteBooking(bookingId: String) {
+        val booking = Booking.deleteBooking(bookingId)
+        if (booking) {
+            call.respond(HttpStatusCode.OK)
+        } else {
+            call.respond(HttpStatusCode.BadRequest, "Booking not found")
+        }
+    }
+
     suspend fun getAllBooking(login: String) {
         val booking = Booking.fetchBooking(login)
         call.respond(booking.map { booking ->

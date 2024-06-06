@@ -2,13 +2,7 @@ package ru.smart_parking.database.booking
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.greater
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.less
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
 import org.jetbrains.exposed.sql.transactions.transaction
-import ru.smart_parking.database.booking.Booking.checkIn
-import ru.smart_parking.database.booking.Booking.exit
 import ru.smart_parking.database.parking.Parking
 import ru.smart_parking.features.booking.BookingReceiveRemote
 import java.time.LocalDateTime
@@ -37,6 +31,18 @@ object Booking : Table("booking") {
                 it[amount] = bookingDTO.amount
                 it[paymentStatus] = bookingDTO.paymentStatus
                 it[numberOfPlace] = bookingDTO.numberOfPlace
+            }
+        }
+    }
+
+    fun deleteBooking(bookingId: String): Boolean {
+        return transaction {
+            val booking = Booking.select { Booking.id eq bookingId }.singleOrNull()
+            if (booking != null) {
+                Booking.deleteWhere { Booking.id eq bookingId }
+                true
+            } else {
+                false
             }
         }
     }

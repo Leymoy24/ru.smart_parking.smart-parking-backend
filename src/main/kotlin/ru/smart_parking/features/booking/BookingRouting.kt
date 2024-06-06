@@ -32,5 +32,15 @@ fun Application.configureBookingRoutes() {
                 call.respond(HttpStatusCode.BadRequest, "ParkingId or date parameter is missing")
             }
         }
+
+        delete("booking") {
+            val bookingId = call.request.queryParameters["bookingId"]
+            if (bookingId != null) {
+                val bookingController = BookingController(call)
+                bookingController.deleteBooking(bookingId)
+            } else {
+                call.respond(HttpStatusCode.BadRequest, "Booking id is missing")
+            }
+        }
     }
 }
