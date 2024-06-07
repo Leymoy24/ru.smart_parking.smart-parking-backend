@@ -9,5 +9,6 @@ class BookingDTO(
     val exit: String,
     val amount: Int,
     val paymentStatus: Boolean,
-    val numberOfPlace: Int
+    val numberOfPlace: Int,
+    val parkingName: String
 )

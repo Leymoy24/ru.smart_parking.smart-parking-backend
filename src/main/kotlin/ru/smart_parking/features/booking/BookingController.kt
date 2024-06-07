@@ -6,6 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import ru.smart_parking.database.booking.Booking
 import ru.smart_parking.database.booking.BookingDTO
+import ru.smart_parking.database.parking.Parking
 import ru.smart_parking.utils.generateUUID
 
 class BookingController(private val call: ApplicationCall) {
@@ -25,7 +26,8 @@ class BookingController(private val call: ApplicationCall) {
                     exit = bookingReceiveRemote.exit,
                     amount = bookingReceiveRemote.amount,
                     paymentStatus = false,
-                    numberOfPlace = 1
+                    numberOfPlace = 1,
+                    parkingName = bookingReceiveRemote.parkingName
                 )
             )
             call.respond(HttpStatusCode.OK)
@@ -53,7 +55,8 @@ class BookingController(private val call: ApplicationCall) {
                 exit = booking.exit,
                 amount = booking.amount,
                 paymentStatus = booking.paymentStatus,
-                numberOfPlace = booking.numberOfPlace
+                numberOfPlace = booking.numberOfPlace,
+                parkingName = booking.parkingName
             )
         })
     }

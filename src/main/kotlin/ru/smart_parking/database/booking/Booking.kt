@@ -12,6 +12,7 @@ object Booking : Table("booking") {
     private val id = Booking.varchar("id", 50)
     private val userLogin = Booking.varchar("user_login", 30)
     private val parkingId = Booking.varchar("parking_id", 50)
+    private val parkingName = Booking.varchar("parking_name", 100)
     private val carNumber = Booking.varchar("car_number", 50)
     private val checkIn = Booking.varchar("check_in", 16)
     private val exit = Booking.varchar("exit", 16)
@@ -31,6 +32,7 @@ object Booking : Table("booking") {
                 it[amount] = bookingDTO.amount
                 it[paymentStatus] = bookingDTO.paymentStatus
                 it[numberOfPlace] = bookingDTO.numberOfPlace
+                it[parkingName] = bookingDTO.parkingName
             }
         }
     }
@@ -78,7 +80,8 @@ object Booking : Table("booking") {
                         exit = bookingRow[exit],
                         amount = bookingRow[amount],
                         paymentStatus = bookingRow[paymentStatus],
-                        numberOfPlace = bookingRow[numberOfPlace]
+                        numberOfPlace = bookingRow[numberOfPlace],
+                        parkingName = bookingRow[parkingName]
                     )
                 }
         }
